@@ -30,8 +30,8 @@ public class StatsController {
                                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                                            @RequestParam(required = false) List<String> uris,
                                            @RequestParam(defaultValue = "false") boolean unique) {
-        log.info("GET request to get statistic: from = {}, to = {}, urisList = {}, uniqueIp = {}"
-                , start, end, uris, unique);
+        log.info("GET request to get statistic: from = {}, to = {}, urisList = {}, uniqueIp = {}",
+                start, end, uris, unique);
         Optional urisOpt = Optional.ofNullable(uris);
         return statTest.get(start, end, urisOpt, unique);
     }

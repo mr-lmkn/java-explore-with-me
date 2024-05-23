@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StatService {
-    void save(HitInDto hitInDto) ;
+    void save(HitInDto hitInDto);
 
     ResponseEntity<Object> get(LocalDateTime start, LocalDateTime end, Optional<List<String>> uris, Boolean unique);
 }

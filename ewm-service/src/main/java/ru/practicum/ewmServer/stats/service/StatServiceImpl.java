@@ -14,24 +14,24 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class StatServiceImpl implements StatService{
-    private String StatsServiceUrl;
+public class StatServiceImpl implements StatService {
+    private String statsServiceUrl;
     private static final String SERVICE_NAME = "ewm-service";
     private RestTemplateBuilder restTemplateBuilder;
     private StatsClient statsClient;
 
     public StatServiceImpl(@Value("${stats-service.STATS_CLIENT_URL}") String serverUrl, RestTemplateBuilder builder) {
-        StatsServiceUrl = serverUrl;
+        statsServiceUrl = serverUrl;
         statsClient = new StatsClient(serverUrl, builder);
     }
 
     public void save(HitInDto hitInDto) {
-        log.info("Send to: {} -> {}", StatsServiceUrl, hitInDto);
+        log.info("Send to: {} -> {}", statsServiceUrl, hitInDto);
         statsClient.save(hitInDto.getApp(), hitInDto.getUri(), hitInDto.getIp());
     }
 
     public ResponseEntity<Object> get(LocalDateTime start, LocalDateTime end, Optional<List<String>> uris, Boolean unique) {
-        log.info("Get from: {}", StatsServiceUrl);
+        log.info("Get from: {}", statsServiceUrl);
         ResponseEntity<Object> ret = statsClient.getStats(start, end, uris, unique);
         log.info(ret.toString());
         return statsClient.getStats(start, end, uris, unique);

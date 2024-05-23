@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class EwmStatsServiceImpl implements EwmStatsService {
     private final ModelMapper modelMapper;
     private final EwmStatsRepository ewmStatsRepository;
-    private final EvmStatsStorage EwmStatsDAO;
+    private final EvmStatsStorage ewmStatsDAO;
 
     @Override
     @Transactional
@@ -37,13 +37,13 @@ public class EwmStatsServiceImpl implements EwmStatsService {
     }
 
     @Override
-    public List<StatDto> getStats(LocalDateTime start, LocalDateTime end
-            , Optional<List<String>> urisList, boolean uniqueIp) {
+    public List<StatDto> getStats(LocalDateTime start, LocalDateTime end,
+            Optional<List<String>> urisList, boolean uniqueIp) {
         List<StatDto> ret;
         if (urisList.isPresent()) {
-            ret = EwmStatsDAO.getStats(start, end, urisList.get(), false, uniqueIp);
+            ret = ewmStatsDAO.getStats(start, end, urisList.get(), false, uniqueIp);
         } else {
-            ret = EwmStatsDAO.getStats(start, end, List.of(new String()), true, uniqueIp);
+            ret = ewmStatsDAO.getStats(start, end, List.of(new String()), true, uniqueIp);
         }
         return ret.stream()
                 .map(p -> modelMapper.map(p, StatDto.class))

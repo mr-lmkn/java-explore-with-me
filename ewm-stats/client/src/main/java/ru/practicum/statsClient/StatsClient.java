@@ -19,11 +19,11 @@ import java.util.Optional;
 public class StatsClient extends BaseClient {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
 
-    public StatsClient(String StatsServiceUrl, RestTemplateBuilder builder) {
+    public StatsClient(String statsServiceUrl, RestTemplateBuilder builder) {
 
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(StatsServiceUrl))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory(statsServiceUrl))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
@@ -40,8 +40,8 @@ public class StatsClient extends BaseClient {
         return post(path, hit);
     }
 
-    public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end
-            , Optional<List<String>> uris, Boolean unique) {
+    public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end,
+                                           Optional<List<String>> uris, Boolean unique) {
         StringBuilder uriBuilder = new StringBuilder("/stats?start={start}&end={end}");
         Map<String, Object> parameters = new HashMap<>(Map.of(
                 "start", start.format(formatter),
