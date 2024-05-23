@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 public class StatsController {
-    StatServiceImpl statTest;
+    private StatServiceImpl statTest;
 
     @PostMapping(path = "/hit", consumes = "application/json;charset=UTF-8", produces = "application/json;")
     public void hit(@RequestBody @Validated HitInDto hitInDto) {

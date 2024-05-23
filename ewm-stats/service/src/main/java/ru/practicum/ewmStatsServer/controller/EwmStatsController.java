@@ -18,7 +18,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 public class EwmStatsController {
-    EwmStatsService ewmStatsService;
+    private EwmStatsService ewmStatsService;
 
     @PostMapping(path = "/hit", consumes = "application/json;charset=UTF-8", produces = "application/json;")
     public HitOutDto hit(@RequestBody @Validated HitInDto hitInDto) {

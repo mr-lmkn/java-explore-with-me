@@ -30,12 +30,13 @@ public class EwmStatsDaoImpl implements EvmStatsDao {
                 + " WHERE e.hit_time BETWEEN :from AND :to \n"
                 + "   AND (e.uri IN (:uriList) OR :emptyList = true)\n"
                 + " GROUP BY e.app, e.uri, e.ip \n"
-                + " ORDER BY CASE WHEN /*:uniqueIp */ false = true THEN count(distinct e.ip) ELSE count(e.ip) END DESC ";
+                + " ORDER BY CASE WHEN :uniqueIp = true THEN count(distinct e.ip) ELSE count(e.ip) END DESC ";
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("from", from)
                 .addValue("to", to)
                 .addValue("uriList", uriList)
                 .addValue("emptyList", emptyList)
+                .addValue("uniqueIp", uniqueIp)
                 .addValue("uniqueIp", uniqueIp);
         log.info("SQL PARAM: {}", parameters.toString());
         List<StatDto> statList = jdbcTemplate.query(sqlQuery, parameters, this::mapRowToStatDto);

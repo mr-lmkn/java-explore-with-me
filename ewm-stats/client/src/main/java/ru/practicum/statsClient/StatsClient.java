@@ -17,10 +17,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class StatsClient extends BaseClient {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
 
     public StatsClient(String statsServiceUrl, RestTemplateBuilder builder) {
-
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(statsServiceUrl))
@@ -44,8 +43,8 @@ public class StatsClient extends BaseClient {
                                            Optional<List<String>> uris, Boolean unique) {
         StringBuilder uriBuilder = new StringBuilder("/stats?start={start}&end={end}");
         Map<String, Object> parameters = new HashMap<>(Map.of(
-                "start", start.format(formatter),
-                "end", end.format(formatter)
+                "start", start.format(FORMATTER),
+                "end", end.format(FORMATTER)
         ));
 
         if (uris.isPresent()) {
