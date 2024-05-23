@@ -32,8 +32,11 @@ public class BaseClient {
         return makeAndSendRequest(HttpMethod.DELETE, path, userId, parameters, null);
     }
 
-    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, Long userId, @Nullable Map<String, Object> parameters, @Nullable T body) {
-        HttpEntity<T> requestEntity = new HttpEntity<>(body);
+    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, Long userId,
+                                                          @Nullable Map<String, Object> parameters,
+                                                          @Nullable T body) {
+        HttpEntity<T> requestEntity = null;
+        if (body != null) requestEntity = new HttpEntity<>(body);
 
         ResponseEntity<Object> shareitServerResponse;
         try {
