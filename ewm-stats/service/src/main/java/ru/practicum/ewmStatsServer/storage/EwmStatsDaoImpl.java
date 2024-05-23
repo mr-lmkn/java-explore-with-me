@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import ru.practicum.ewmStatsDto.StatDto;
 
 import java.sql.ResultSet;
@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
-@Service
+@Repository
 @AllArgsConstructor
-public class EwmStatsDAO implements EvmStatsStorage {
+public class EwmStatsDaoImpl implements EvmStatsDao {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -29,7 +29,8 @@ public class EwmStatsDAO implements EvmStatsStorage {
                 + " FROM ewm_hits e \n"
                 + " WHERE e.hit_time BETWEEN :from AND :to \n"
                 + "   AND (e.uri IN (:uriList) OR :emptyList = true)\n"
-                + " GROUP BY e.app, e.uri, e.ip \n";
+                + " GROUP BY e.app, e.uri, e.ip \n"
+                + " ORDER BY CASE WHEN /*:uniqueIp */ false = true THEN count(distinct e.ip) ELSE count(e.ip) END DESC ";
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("from", from)
                 .addValue("to", to)

@@ -11,7 +11,7 @@ import ru.practicum.ewmStatsDto.HitInDto;
 import ru.practicum.ewmStatsDto.HitOutDto;
 import ru.practicum.ewmStatsDto.StatDto;
 import ru.practicum.ewmStatsServer.model.Hit;
-import ru.practicum.ewmStatsServer.storage.EvmStatsStorage;
+import ru.practicum.ewmStatsServer.storage.EvmStatsDao;
 import ru.practicum.ewmStatsServer.storage.EwmStatsRepository;
 
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class EwmStatsServiceImpl implements EwmStatsService {
     private final ModelMapper modelMapper;
     private final EwmStatsRepository ewmStatsRepository;
-    private final EvmStatsStorage ewmStatsDAO;
+    private final EvmStatsDao ewmStatsDAO;
 
     @Override
     @Transactional
@@ -38,7 +38,7 @@ public class EwmStatsServiceImpl implements EwmStatsService {
 
     @Override
     public List<StatDto> getStats(LocalDateTime start, LocalDateTime end,
-            Optional<List<String>> urisList, boolean uniqueIp) {
+                                  Optional<List<String>> urisList, boolean uniqueIp) {
         List<StatDto> ret;
         if (urisList.isPresent()) {
             ret = ewmStatsDAO.getStats(start, end, urisList.get(), false, uniqueIp);
