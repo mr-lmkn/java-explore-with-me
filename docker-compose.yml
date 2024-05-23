@@ -1,15 +1,68 @@
 version: '3.1'
 services:
-  stats-server:
+  stats-service:
+    build: ewm-stats/service
+    image: stats-service-image
+    container_name: stats-server-container
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    #      - /var/lib/postgresql/data/ # uncomment on prod
     ports:
       - "9090:9090"
+    depends_on:
+      - stats-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/ewm-stats
+      - SPRING_DATASOURCE_USERNAME=ewm-stats-user
+      - SPRING_DATASOURCE_PASSWORD=ewm-stats-user-pswd
+      - SPRING_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - STATS_CLIENT_URL=http://stats-service:9090
 
   stats-db:
-    image: postgres:14-alpine
+    #image: postgres:14-alpine
+    image: postgres:16-alpine
+    container_name: ewm-stats-db-container
+    ports:
+      - "6541:5432"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - POSTGRES_USER=ewm-stats-user
+      - POSTGRES_PASSWORD=ewm-stats-user-pswd
+      - POSTGRES_DB=ewm-stats
 
   ewm-service:
+    build: ewm-service
+    image: ewm-service-image
+    container_name: ewm-service-container
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      #      - /var/lib/postgresql/data/
     ports:
-      - "8080:8080"
+        - "8080:8080"
+    depends_on:
+      - ewm-db
+      - stats-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5433/ewm-server
+      - SPRING_DATASOURCE_USERNAME=ewm-server-user
+      - SPRING_DATASOURCE_PASSWORD=ewm-server-user-pswd
+      - SPRING_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - STATS_CLIENT_URL=http://stats-service:9090
 
   ewm-db:
-    image: postgres:14-alpine
+    #image: postgres:14-alpine
+    image: postgres:16-alpine
+    container_name: ewm-stat-db-container
+    ports:
+      - "6542:5433"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - POSTGRES_USER=ewm-server-user
+      - POSTGRES_PASSWORD=ewm-server-user-pswd
+      - POSTGRES_DB=ewm-server
