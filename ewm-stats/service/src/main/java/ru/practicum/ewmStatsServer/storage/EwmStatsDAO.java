@@ -21,8 +21,8 @@ public class EwmStatsDAO implements EvmStatsStorage {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public List<StatDto> getStats(LocalDateTime from, LocalDateTime to
-            , List<String> uriList, Boolean emptyList, Boolean uniqueIp) {
+    public List<StatDto> getStats(LocalDateTime from, LocalDateTime to,
+                                  List<String> uriList, Boolean emptyList, Boolean uniqueIp) {
         String sqlQuery = "\n SELECT "
                 + "            e.app, e.uri \n"
                 + "          , CASE WHEN :uniqueIp = true THEN count(distinct e.ip) ELSE count(e.ip) END as hits \n"
@@ -37,10 +37,7 @@ public class EwmStatsDAO implements EvmStatsStorage {
                 .addValue("emptyList", emptyList)
                 .addValue("uniqueIp", uniqueIp);
         log.info("SQL PARAM: {}", parameters.toString());
-        List<StatDto> statList = jdbcTemplate.query(sqlQuery
-                , parameters
-                , this::mapRowToStatDto
-        );
+        List<StatDto> statList = jdbcTemplate.query(sqlQuery, parameters, this::mapRowToStatDto);
         return statList;
     }
 
