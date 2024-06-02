@@ -45,9 +45,12 @@ public class EwmStatsServiceImpl implements EwmStatsService {
         } else {
             ret = ewmStatsDAO.getStats(start, end, List.of(new String()), true, uniqueIp);
         }
-        return ret.stream()
+
+        List<StatDto> out = ret.stream()
                 .map(p -> modelMapper.map(p, StatDto.class))
                 .collect(Collectors.toList());
+        log.info("Stat: {}", out);
+        return out;
     }
 
 }

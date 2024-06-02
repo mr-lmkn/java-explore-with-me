@@ -1,5 +1,6 @@
 package ru.practicum.ewmStatsServer.controller;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,7 +27,8 @@ public class EwmStatsController {
         return ewmStatsService.saveHit(hitInDto);
     }
 
-    @GetMapping("/stats")
+    @GetMapping(path = "/stats", produces = "application/json;")
+    @JsonRawValue
     public List<StatDto> getStats(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                                   @RequestParam(required = false) List<String> uris,
