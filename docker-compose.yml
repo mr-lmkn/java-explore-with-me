@@ -33,7 +33,7 @@ services:
       - POSTGRES_PASSWORD=ewm-stats-user-pswd
       - POSTGRES_DB=ewm-stats
 
-  ewm-service:
+  ewm-main-service:
     build: ewm-service
     image: ewm-service-image
     container_name: ewm-container

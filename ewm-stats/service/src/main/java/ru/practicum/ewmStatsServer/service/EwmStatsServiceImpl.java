@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewmStatsDto.HitInDto;
 import ru.practicum.ewmStatsDto.HitOutDto;
 import ru.practicum.ewmStatsDto.StatDto;
+import ru.practicum.ewmStatsServer.error.exceptions.BadRequestException;
 import ru.practicum.ewmStatsServer.model.Hit;
 import ru.practicum.ewmStatsServer.storage.EvmStatsDao;
 import ru.practicum.ewmStatsServer.storage.EwmStatsRepository;
@@ -38,8 +39,9 @@ public class EwmStatsServiceImpl implements EwmStatsService {
 
     @Override
     public List<StatDto> getStats(LocalDateTime start, LocalDateTime end,
-                                  Optional<List<String>> urisList, boolean uniqueIp) {
+                                  Optional<List<String>> urisList, boolean uniqueIp) throws BadRequestException {
         List<StatDto> ret;
+        if (start.isAfter(end)) throw new BadRequestException("Dates range is incorrect");
         if (urisList.isPresent()) {
             ret = ewmStatsDAO.getStats(start, end, urisList.get(), false, uniqueIp);
         } else {
