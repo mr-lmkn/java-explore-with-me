@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewmServer.stats.service.StatServiceImpl;
+import ru.practicum.ewmServer.stats.service.StatisticServiceImpl;
 import ru.practicum.ewmStatsDto.HitInDto;
 
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 public class StatsController {
-    private StatServiceImpl statTest;
+    private StatisticServiceImpl statTest;
 
     @PostMapping(path = "/hit", consumes = "application/json;charset=UTF-8", produces = "application/json;")
     public void hit(@RequestBody @Validated HitInDto hitInDto) {
