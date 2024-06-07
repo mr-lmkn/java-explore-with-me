@@ -4,7 +4,8 @@ DROP TABLE IF EXISTS location CASCADE;
 DROP TABLE IF EXISTS events CASCADE;
 DROP TABLE IF EXISTS compilations CASCADE;
 DROP TABLE IF EXISTS compilations_to_event CASCADE;
-DROP TABLE If EXISTS requests CASCADE;
+DROP TABLE IF EXISTS requests CASCADE;
+DROP TABLE IF EXISTS event_likes CASCADE;
 
 CREATE TABLE IF NOT EXISTS users(
     id       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY UNIQUE,
@@ -74,5 +75,30 @@ CREATE TABLE IF NOT EXISTS compilations_to_event(
     CONSTRAINT fk_event_compilation_to_event
         FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE,
     CONSTRAINT fk_event_compilation_to_compilation
-        FOREIGN KEY (compilation_id) REFERENCES compilations (id) ON DELETE CASCADE
+        FOREIGN KEY (compilation_id) REFERENCES compilations (id) ON DELETE CASCADE,
+    CONSTRAINT uq_event_compilation_event_id_compilation_id UNIQUE (event_id, compilation_id)
 );
+
+CREATE TABLE IF NOT EXISTS event_likes (
+    id             BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    event_id       BIGINT NOT NULL,
+    user_id        BIGINT NOT NULL,
+    is_like        BOOLEAN,
+    created_date   TIMESTAMP WITHOUT TIME ZONE,
+    CONSTRAINT fk_event_likes_to_event
+        FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE,
+    CONSTRAINT fk_event_likes_to_user
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT uq_event_likes_event_id_user_id UNIQUE (event_id, user_id)
+);
+
+CREATE OR REPLACE  VIEW v_event_rating ( event_id, rating, likes, dislikes )
+    AS SELECT l.event_id
+            , sum(
+                   CASE WHEN l.is_like = true  THEN 1 ELSE 0 END
+                -  CASE WHEN l.is_like = false THEN 1 ELSE 0 END
+              ) as rating
+            , sum( CASE WHEN l.is_like = true   THEN 1 ELSE 0 END ) as likes
+            , sum( CASE WHEN l.is_like = false  THEN 1 ELSE 0 END ) as dislikes
+         FROM event_likes l
+     GROUP BY l.event_id;

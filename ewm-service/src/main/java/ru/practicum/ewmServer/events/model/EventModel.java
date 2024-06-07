@@ -18,6 +18,8 @@ import java.util.Objects;
 @DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
+@SecondaryTable(name = "v_event_rating",
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "event_id"))
 public class EventModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,11 +55,12 @@ public class EventModel {
     private EventStatus state;
     @Column(name = "title", length = 120)
     private String title;
-
     @Column(name = "views")
     private Long views;
     @Column(name = "confirmed_requests")
     private int confirmedRequestsCount;
+    @Column(table = "v_event_rating", name = "rating")
+    private Integer rating;
 
     public Long getViews() {
         return Objects.requireNonNullElse(views, 0L);

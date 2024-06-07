@@ -28,4 +28,6 @@ public class EventShortDto {
     private Boolean paid;
     private String title;
     private Long views;
+    @Nullable
+    private Integer rating;
 }

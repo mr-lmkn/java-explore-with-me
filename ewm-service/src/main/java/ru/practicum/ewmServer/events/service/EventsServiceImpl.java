@@ -22,6 +22,7 @@ import ru.practicum.ewmServer.events.dto.sesrch.EventSearchRequest;
 import ru.practicum.ewmServer.events.enums.EventStatus;
 import ru.practicum.ewmServer.events.model.EventModel;
 import ru.practicum.ewmServer.events.storage.EventsRepository;
+import ru.practicum.ewmServer.likes.storage.EventLikesRepository;
 import ru.practicum.ewmServer.requests.emums.RequestStatus;
 import ru.practicum.ewmServer.requests.model.EventRequestsCountModel;
 import ru.practicum.ewmServer.requests.storage.RequestsRepository;
@@ -38,7 +39,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.practicum.ewmServer.events.enums.EventStatus.*;
-//import static ru.practicum.ewmServer.emums.RequestStatus.CONFIRMED;
 
 @Slf4j
 @Repository
@@ -53,6 +53,7 @@ public class EventsServiceImpl implements EventsService {
     private final RequestsRepository requestsRepository;
     private final StatisticService statisticService;
     private final ModelMapper modelMapper;
+    private final EventLikesRepository eventLikesRepository;
 
     @Override
     public EventModel getEvent(Long id) throws NotFoundException {
@@ -93,7 +94,6 @@ public class EventsServiceImpl implements EventsService {
         List<Long> users = Objects.nonNull(filter.getUsers()) ? filter.getUsers() : List.of(0L);
         List<EventModel> eventsList = eventsRepository.getAllBySearchRequest(
                 null,
-                //categories.size(),
                 categories,
                 null,
                 filter.getRangeStart(),
@@ -103,7 +103,6 @@ public class EventsServiceImpl implements EventsService {
                 filter.getFrom(),
                 filter.getSize(),
                 stateId,
-                //users.size(),
                 users
         );
 
@@ -145,12 +144,14 @@ public class EventsServiceImpl implements EventsService {
                     if (!oldEvent.getState().equals(PENDING)) {
                         throw new ConflictException("Cant update state event is not in PENDING state");
                     }
+                    oldEvent.setPublisherDate(LocalDateTime.now());
                     oldEvent.setState(PUBLISHED);
                     break;
                 case REJECT_EVENT:
                     if (oldEvent.getState().equals(PUBLISHED)) {
                         throw new ConflictException("Cant update state event is in PUBLISHED state");
                     }
+                    oldEvent.setPublisherDate(null);
                     oldEvent.setState(CANCELED);
                     break;
                 default:
