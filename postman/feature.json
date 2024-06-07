@@ -25,6 +25,16 @@
 								"type": "text/javascript",
 								"packages": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
 					],
 					"request": {
@@ -160,7 +170,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"annotation\":\"Tst-01 - annotation: размер должен находиться в диапазоне от 20 до 2000\",\"category\":121,\"description\":\"Tst-01 - description: размер должен находиться в диапазоне от 20 до 7000\",\"eventDate\":\"2025-06-07 02:27:55\",\"location\":{\"lat\":75.6193,\"lon\":-35.3596},\"paid\":\"true\",\"participantLimit\":1,\"requestModeration\":true,\"title\":\"Tst-01\"}",
+							"raw": "{\"annotation\":\"Tst-01  - annotati   on: размер должен находиться в диапазоне от 20 до 2000\"\r\n,\"category\":121,\"description\":\"Ts t-01 - descri ption: размер должен находит     ься в диапазоне от 20 до 7000\"\r\n,\"eventDate\":\"2025-07-07 02:27:55\"\r\n,\"location\":{\"lat\":75.6193,\"lon\":-35.3596},\"paid\":\"true\",\"participantLimit\":1,\"requestModeration\":true,\"title\":\"Tst-01\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -223,7 +233,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/104/like?userId=137&isLike=true",
+							"raw": "http://localhost:8080/events/108/like?userId=137&isLike=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -231,7 +241,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"104",
+								"108",
 								"like"
 							],
 							"query": [
@@ -276,7 +286,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8080/admin/events/104"
+						"url": "http://localhost:8080/admin/events/107"
 					},
 					"response": []
 				},
@@ -300,7 +310,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/104/like?userId=136&isLike=true",
+							"raw": "http://localhost:8080/events/107/like?userId=136&isLike=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -308,7 +318,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"104",
+								"107",
 								"like"
 							],
 							"query": [
@@ -345,7 +355,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/104/like?userId=137&isLike=true",
+							"raw": "http://localhost:8080/events/107/like?userId=137&isLike=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -353,7 +363,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"104",
+								"107",
 								"like"
 							],
 							"query": [
@@ -390,7 +400,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/104/like?userId=137&isLike=true",
+							"raw": "http://localhost:8080/events/107/like?userId=137&isLike=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -398,7 +408,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"104",
+								"107",
 								"like"
 							],
 							"query": [
@@ -443,7 +453,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8080/admin/events/105"
+						"url": "http://localhost:8080/admin/events/108"
 					},
 					"response": []
 				},
@@ -526,7 +536,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/105/like?userId=138&isLike=true",
+							"raw": "http://localhost:8080/events/108/like?userId=138&isLike=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -534,7 +544,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"105",
+								"108",
 								"like"
 							],
 							"query": [
@@ -571,7 +581,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/104/like?userId=138&isLike=true",
+							"raw": "http://localhost:8080/events/107/like?userId=138&isLike=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -579,7 +589,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"104",
+								"107",
 								"like"
 							],
 							"query": [
@@ -675,7 +685,7 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/105/like?userId=138&isLike=false",
+							"raw": "http://localhost:8080/events/108/like?userId=138&isLike=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -683,7 +693,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"105",
+								"108",
 								"like"
 							],
 							"query": [
