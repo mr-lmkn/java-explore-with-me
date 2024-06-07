@@ -27,8 +27,9 @@ public interface EventsRepository extends JpaRepository<EventModel, Long> {
 
     Optional<EventModel> findByIdAndInitiatorId(Long eventId, Long userId);
 
-    @Query(value = "\n SELECT e.* "
+    @Query(value = "\n SELECT e.*, rt.rating \n"
             + "       FROM events e\n"
+            + "  LEFT JOIN v_event_rating rt ON e.id = rt.event_id \n"
             + "      WHERE (:status is null OR e.status_id = :status) \n"
             + "        AND (coalesce(:text, null) is null \n"
             + "               OR upper(title) LIKE '%'||upper(:text)||'%' "
@@ -39,11 +40,13 @@ public interface EventsRepository extends JpaRepository<EventModel, Long> {
             + "        AND ( (cast(:rangeStart as TIMESTAMP) is null AND e.event_date >= NOW()) \n"
             + "               OR e.event_date >= cast(:rangeStart as TIMESTAMP) ) \n"
             + "        AND (cast(:rangeEnd as TIMESTAMP) is null   OR e.event_date <= cast(:rangeEnd as TIMESTAMP)) \n"
-            + "        AND (coalesce(:onlyAvailable, false) = false OR participant_limit < confirmed_Requests) \n"
+            + "        AND (coalesce(:onlyAvailable, false) is false OR participant_limit > confirmed_Requests) \n"
             + "        AND ( 0 in (:usersIds) OR initiator_id IN (:usersIds)) \n"
             + "   ORDER BY \n"
             + "         CASE WHEN :sort = 'EVENT_DATE' THEN e.EVENT_DATE ELSE NULL END \n"
-            + "       , CASE WHEN :sort != 'EVENT_DATE' THEN e.VIEWS ELSE NULL END \n"
+            + "       , CASE WHEN :sort = 'VIEWS' THEN e.VIEWS ELSE NULL END \n"
+            + "       , CASE WHEN :sort = 'RATING' THEN rt.rating ELSE NULL END DESC\n"
+            + "       , CASE WHEN :sort is null THEN e.id ELSE NULL END \n"
             + "      LIMIT :size OFFSET :from \n",
             nativeQuery = true)
     ArrayList<EventModel> getAllBySearchRequest(
