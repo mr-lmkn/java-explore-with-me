@@ -43,9 +43,9 @@ public interface EventsRepository extends JpaRepository<EventModel, Long> {
             + "        AND (coalesce(:onlyAvailable, false) is false OR participant_limit > confirmed_Requests) \n"
             + "        AND ( 0 in (:usersIds) OR initiator_id IN (:usersIds)) \n"
             + "   ORDER BY \n"
-            + "         CASE WHEN :sort = 'EVENT_DATE' THEN e.EVENT_DATE ELSE NULL END \n"
-            + "       , CASE WHEN :sort = 'VIEWS' THEN e.VIEWS ELSE NULL END \n"
-            + "       , CASE WHEN :sort = 'RATING' THEN rt.rating ELSE NULL END DESC\n"
+            + "         CASE WHEN :sort = 'EVENT_DATE' THEN EXTRACT(EPOCH FROM e.EVENT_DATE) * 1000 \n"
+            + "              WHEN :sort = 'VIEWS' THEN e.VIEWS  \n"
+            + "              WHEN :sort = 'RATING' THEN CAST(rt.rating  AS BIGINT) END desc nulls last\n"
             + "       , CASE WHEN :sort is null THEN e.id ELSE NULL END \n"
             + "      LIMIT :size OFFSET :from \n",
             nativeQuery = true)
